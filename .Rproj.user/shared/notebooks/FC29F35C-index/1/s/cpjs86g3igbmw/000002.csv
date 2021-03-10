@@ -1,0 +1,5 @@
+"0","Tidy_Fricatives %>%"
+"0","  ggplot(aes(x = phoneme, y = cog)) +"
+"0","  geom_boxplot() +"
+"0","  labs(x = ""Phoneme"", y = ""Average center of gravity by trial"", title = ""Center of gravity by phoneme"") +"
+"0","  theme(plot.title = element_text(hjust = 0.5))"

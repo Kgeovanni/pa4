@@ -1,0 +1,140 @@
+---
+title: "Assignment 4"
+subtitle: "⚔<br/>"
+author: "Diana Sanchez"
+institute: "Rutgers University: Data Science for Linguists"
+date: "Due date: March 10, 2021"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+background-image: url(https://i.pinimg.com/564x/4c/78/65/4c78654be43dc14f7509346806361a68.jpg)
+
+---
+```{r setup, include = FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, load, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+options(scipen = 999)
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(patchwork)
+library(xaringan)
+library(ds4ling)
+library(sjPlot)
+```
+
+```{r, load-data, include = FALSE}
+Raw_Fricatives = read.csv("../data_raw/fricatives.csv")
+```
+
+# Key Terms & Information
+
+- Center of Gravity (CoG)
+
+
+- obs: (character), observation number
+- s_cog: (numeric), center of gravity measurement in Hz for [s].
+- s_skewness: (numeric), skewness measurement for [s].
+- sh_cog: (numeric), center of gravity measurement in Hz for [ʃ].
+- sh_skewness: (numeric), skewness measurement for [ʃ].
+
+```{r, tidy-data}
+Tidy_Fricatives <- Raw_Fricatives %>%
+  pivot_longer(c("s_cog", "s_skewness", "sh_cog", "sh_skewness"), names_to = "class", values_to = "hz") %>%
+  separate("class", into = c("phoneme", "metric"), sep = "_") %>%
+  pivot_wider(names_from = "metric", values_from = "hz")
+
+write.csv(Tidy_Fricatives, "../data_tidy/tidyfricatives.csv")
+```
+
+```{r, descriptive-stats}
+Descriptive_Fricatives <- Tidy_Fricatives %>% 
+  group_by(phoneme) %>% 
+  summarize(Mean_cog = mean(cog), SDCog = sd(cog), Mean_skewness = mean(skewness), SS_skewness = sd(skewness))
+```
+
+---
+# Descriptive Statistics 
+```{r, kable} 
+Descriptive_Fricatives %>% 
+  kbl(caption = "Table 1. Mean Average Table  Fricatives /s/ and /sh/") %>% 
+  kable_classic(full_width = F, html_font = "Cambria")
+```
+
+---
+# CoG as a Function of Phoneme
+```{r, boxplot-cog}
+Tidy_Fricatives %>%
+  ggplot(aes(x = phoneme, y = cog)) +
+  geom_boxplot() +
+  labs(x = "Phoneme", y = "Average center of gravity by trial", title = "Center of gravity by phoneme") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+---
+# Skewness as a Function of Phoneme
+```{r, boxplot-skewedness}
+Tidy_Fricatives %>%
+  ggplot(aes(x = phoneme, y = skewness)) +
+  geom_boxplot() +
+  labs(x = "Phoneme", y = "Average skewness across trials", title = "Skewness by phoneme") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+---
+```{r, model}
+S_Model_Fricatives <- Tidy_Fricatives %>%
+  filter(., phoneme == "s")
+```
+
+# Statistical Transformation
+``` {r, statistical-transformation}
+Tidy_Fricatives %>% 
+  ggplot(aes(x = phoneme, y = skewness)) +
+  geom_point(position = position_jitter(2), size = 1.5) +
+  labs(x = "Target Phonemes", y = "Average of Skewness", 
+       title = "Average Skewness by Phoneme", 
+       color = "Morphological Regularity") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+---
+
+# COG as a Function of Skewness for /s/
+```{r, plot-model}
+S_Model_Fricatives %>%
+  ggplot(aes(x = skewness, y = cog)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  labs(x = "Skewness", y = "Center of gravity", title = "Figure 2.  Center of gravity as a function of skewness for /s/") +
+    theme(plot.title = element_text(hjust = 0.5))
+```
+---
+```{r, model-regression}
+S_Model_Regression <- lm(cog ~ skewness, data = S_Model_Fricatives)
+```
+# Summary of Model
+```{r, tab-model}
+tab_model(S_Model_Regression)
+```
+---
+# Model Diagnostics
+```{r, diagnostics} 
+ds4ling::diagnosis(S_Model_Regression)
+```
+
+---
+# Findings
+The current study investigated English voiceless fricatives using acoustic tools. The researchers examined two spectral parameters: center of gravity(CoG) and skewness. A total of 20 trials were investigated for the voiceless fricatives /s/ and /sh/.  The results in Figure 2 indicate a positive correlation for the phoneme /s/ for both skewness and CoG values. However, observation of the data reveals two unusual points.
+
+---
+# Credits
+It was a pleasure to collaborate with Kaylee and Patrick on this coding adventure. Kyle was also a great support and offered some great insights.
+
+Thank you!!

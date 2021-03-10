@@ -1,0 +1,3 @@
+"0","Descriptive_Fricatives <- Tidy_Fricatives %>% "
+"0","  group_by(phoneme) %>% "
+"0","  summarize(Mean_cog = mean(cog), SDCog = sd(cog), Mean_skewness = mean(skewness), SS_skewness = sd(skewness))"

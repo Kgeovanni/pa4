@@ -1,0 +1,86 @@
+---
+title: "index.Rmd"
+author: "Diana"
+date: "2/19/2021"
+output: html_document
+---
+####
+Worked with Kaylee, Jessica, & Patrick to sort/check codes.
+####
+
+### SETUP
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(languageR)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+### EDA: Load dataset
+```{r, languageR}
+etymology = etymology
+```
+
+### EDA: Tidy the dataset
+```{r}
+etymology <- etymology %>%
+  filter(., Valency < 15)
+```
+
+```{r}
+etymology_descriptive <- etymology %>% 
+  group_by(Valency) %>% 
+  summarize(MeanWrittenFrequency = mean(WrittenFrequency), SDWrittenFrequency = sd(WrittenFrequency))
+
+etymology_descriptive %>% 
+  kbl(caption = "Table 1  Written Frequency") %>% 
+  kable_classic(full_width = F, html_font = "Cambria")
+```
+
+```{r}
+etymology <- etymology %>%
+  mutate(HighWrittenFreq = if_else(WrittenFrequency > 10, "yes", "no"))
+```
+
+### EDA: Calculate descriptive statistics
+```{r}
+etymology %>%
+  summary()
+```
+
+```{r}
+etymology %>% 
+  group_by(Regularity) %>% 
+  summarize(
+    WrittenFrequency = mean(WrittenFrequency),
+    WrittenSpokenRatio = mean(WrittenSpokenRatio)) %>%
+  kable(caption = "Table 2") %>% 
+  kable_classic(full_width = F, html_font = "Cambria")
+```
+
+### EDA: Graph 
+```{r}
+etymology %>%
+  ggplot(aes(x = Valency, y = WrittenFrequency, color = Regularity)) + xlim(0, 17) +
+  geom_point(position = position_jitter(2), size = 1.5) +
+  geom_smooth(method = lm, se = FALSE, fullrange = TRUE) +
+  labs(x = "Valency", y = "Logarithmically Transfomred Written Frequency", 
+       title = "Frequency of Dutch Verbs by Verbal Valency", 
+       caption = "Data from Baayen, Moscoso del Prado, Martin (2005); Tabak, Schreuder, Baayen    (2005)",
+       color = "Morphological Regularity") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### EDA correlation
+```{r}
+correlation <- lm(Valency ~ WrittenFrequency, data = etymology)
+summary(correlation)
+```
+### General observations
+
+The data from Baayen, Moscoso del Prado, Martin (2005) and Tabak, Schreuder, Baayen (2005) were used to complete this assignment. The variables "valency" and "logarithmically transformed written frequency" were analyzed. Based on the graph results, it can be inferred that irregular verbs have a higher valency than regular verbs. A summary of the variable, "Written Frequency" was gathered, results placed irregular verbs at a mean score of 7.96 and regular verbs at a mean score of 7.78. This summary indicates that when compared to regular verbs, irregular verbs have greater semantic use.
+

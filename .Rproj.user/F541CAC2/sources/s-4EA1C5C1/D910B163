@@ -1,0 +1,28 @@
+{
+    "id": "D910B163",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1615404364431.0,
+    "source_on_save": false,
+    "relative_order": 9,
+    "properties": {
+        "id": "fd2fecc49b404f60a78440b7be8816bf",
+        "name": "S_Model_Regression",
+        "title": "S_Model_Regression",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 4392550566,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1615404364431,
+    "read_only": false,
+    "read_only_alternatives": []
+}

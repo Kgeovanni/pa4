@@ -1,0 +1,4 @@
+"0","my_data <- read.csv(""fricatives"")"
+"2","cannot open file 'fricatives': No such file or directory"
+"2","Error in file(file, ""rt"") : cannot open the connection
+"

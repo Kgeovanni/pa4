@@ -1,0 +1,3 @@
+"0","Descriptive_Fricatives %>% "
+"0","  kbl(caption = ""Table 1.  Name Here"") %>% "
+"0","  kable_classic(full_width = F, html_font = ""Cambria"")"

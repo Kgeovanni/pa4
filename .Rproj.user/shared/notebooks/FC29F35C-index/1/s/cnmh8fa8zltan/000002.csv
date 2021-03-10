@@ -1,0 +1,4 @@
+"0","Tidy_Fricatives <- Raw_Fricatives %>%"
+"0","  pivot_longer(c(""s_cog"", ""s_skewness"", ""sh_cog"", ""sh_skewness""), names_to = ""class"", values_to = ""hz"") %>%"
+"0","  separate(""class"", into = c(""phoneme"", ""metric""), sep = ""_"") %>%"
+"0","  pivot_wider(names_from = ""metric"", values_from = ""hz"")"

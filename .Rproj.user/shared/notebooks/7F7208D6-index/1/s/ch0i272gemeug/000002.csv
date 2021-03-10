@@ -1,0 +1,7 @@
+"0","etymology %>% "
+"0","  group_by(Regularity) %>% "
+"0","  summarize("
+"0","    WrittenFrequency = mean(WrittenFrequency),"
+"0","    WrittenSpokenRatio = mean(WrittenSpokenRatio)) %>%"
+"0","  kable(caption = ""Table 2"") %>% "
+"0","  kable_classic(full_width = F, html_font = ""Cambria"")"

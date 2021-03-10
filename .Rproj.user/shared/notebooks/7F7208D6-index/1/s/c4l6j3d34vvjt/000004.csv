@@ -1,0 +1,7 @@
+"0","etymology_descriptive <- etymology %>% "
+"0","  group_by(Valency) %>% "
+"0","  summarize(MeanWrittenFrequency = mean(WrittenFrequency), SDWrittenFrequency = sd(WrittenFrequency))"
+"0",""
+"0","etymology_descriptive %>% "
+"0","  kbl(caption = ""Table 1  Written Frequency"") %>% "
+"0","  kable_classic(full_width = F, html_font = ""Cambria"")"
